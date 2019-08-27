@@ -127,7 +127,6 @@ def goToAcctOrgs(driver, key):
 def restrictOrgs(driver, authOrgs):
     """Takes in a list of accounts and their authorized orgs then click check boxes to restrict"""
 
-
     for key, value in authOrgs.items():
         goToAcctOrgs(driver, key)
         xpath = '//*[@id="tree-data"]'
@@ -153,11 +152,22 @@ def restrictOrgs(driver, authOrgs):
         #xpath = '//*[@id="button_cancel"]'
         #driver.find_element_by_xpath(xpath).click()
 
+class credentials:
+    def __init__(self):
+        self.url = input("What is the URL? \nExample: 'http://sites.unanet.com/demo'\n")
+        self.username = input("Enter the username: ")
+        self.password = input("Enter the password: ")
+
+def prompt_credentials():
+    return credentials()
+
+
 if __name__ == "__main__":
 
+    cr = prompt_credentials()
     # Initialize driver and login to Unanet
     driver = init_brwsr(False,'./tmp')
-    login(driver, URL, username, password)
+    login(driver, cr.url, cr.username, cr.password)
 
     #searchOpts = {'criteriaf1', '//*[@id="tab.list.search"]/div/form/table/tbody/tr[1]/td[1]/table/tbody/tr[1]/td[2]/input', 'crieriav1', '10.06'}
     #tbody = getTable(driver, '/admin/setup/accounting/account/list', False)
