@@ -1,6 +1,7 @@
 from jackLib.stanfun import init_brwsr, login
 import sys
 import csv
+import os
 import selenium
 
 # Enter parameters for customer site
@@ -154,27 +155,39 @@ def restrictOrgs(driver, authOrgs):
 
 class credentials:
     def __init__(self):
+        pass
+
+    def prompt(self, url, username, password, skipRemap):
         self.url = input("What is the URL? \nExample: 'http://sites.unanet.com/demo'\n")
         self.username = input("Enter the username: ")
         self.password = input("Enter the password: ")
-
-def prompt_credentials():
-    return credentials()
+        self.skipRemap = input("Skip Org & Account Mapping? (Y/N) ")
 
 
 if __name__ == "__main__":
 
-    cr = prompt_credentials()
+    # cr = credentials()
+    # cr.prompt('url', 'username', 'password', 'skipRemap')
+
     # Initialize driver and login to Unanet
     driver = init_brwsr(False,'./tmp')
-    login(driver, cr.url, cr.username, cr.password)
+    # login(driver, cr.url, cr.username, cr.password)
+    login(driver, URL, username, password)
 
-    #searchOpts = {'criteriaf1', '//*[@id="tab.list.search"]/div/form/table/tbody/tr[1]/td[1]/table/tbody/tr[1]/td[2]/input', 'crieriav1', '10.06'}
-    #tbody = getTable(driver, '/admin/setup/accounting/account/list', False)
-    #mkRefFile(tbody, './tmp/account-ref.csv', 1)
+    skipRemap = "N"
+    if skipRemap == "N":
+    # if cr.skipRemap == "N":
+        try:
+           os.remove(r'./tmp/account-ref.csv')
+           os.remove(r'./tmp/org-ref.csv')
+        except:
+           pass
 
-    #tbody = getTable(driver, '/organizations/list', False)
-    #mkRefFile(tbody, './tmp/org-ref.csv', 3)
+        tbody = getTable(driver, '/admin/setup/accounting/account/list', False)
+        mkRefFile(tbody, './tmp/account-ref.csv', 1)
+
+        tbody = getTable(driver, '/organizations/list', False)
+        mkRefFile(tbody, './tmp/org-ref.csv', 3)
 
     authOrgs = compFiles(import_file, './tmp/account-ref.csv')
 

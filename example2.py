@@ -1,3 +1,0 @@
-import example
-
-print('running')
